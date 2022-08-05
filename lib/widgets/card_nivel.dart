@@ -1,27 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:jogo_da_memoria/constants.dart';
+import 'package:jogo_da_memoria/controllers/game_controller.dart';
+import 'package:jogo_da_memoria/models/game_play.dart';
 import 'package:jogo_da_memoria/pages/game_page.dart';
 import 'package:jogo_da_memoria/thema.dart';
+import 'package:provider/provider.dart';
 
 class CardNivel extends StatelessWidget {
-  final Modo modo;
-  final int nivel;
+  final GamePlay gamePlay;
 
   const CardNivel({
     Key? key,
-    required this.modo,
-    required this.nivel,
+    required this.gamePlay,
   }) : super(key: key);
+
+  startGame(BuildContext context) {
+    context.read<GameController>().startGame(gamePlay: gamePlay);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (BuildContext context) => GamePage(gamePlay: gamePlay),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (BuildContext context) => GamePage(modo: modo, nivel: nivel),
-        ),
-      ),
+      onTap: () => startGame(context),
       borderRadius: const BorderRadius.all(Radius.circular(10)),
       child: Container(
         width: 90,
@@ -29,16 +36,17 @@ class CardNivel extends StatelessWidget {
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           border: Border.all(
-            color: modo == Modo.normal ? Colors.white : Round6Theme.color,
+            color:
+                gamePlay.modo == Modo.normal ? Colors.white : Round6Theme.color,
           ),
           borderRadius: const BorderRadius.all(Radius.circular(10)),
-          color: modo == Modo.normal
+          color: gamePlay.modo == Modo.normal
               ? Colors.transparent
               : Round6Theme.color.withOpacity(.6),
         ),
         child: Center(
           child: Text(
-            nivel.toString(),
+            gamePlay.nivel.toString(),
             style: const TextStyle(fontSize: 30),
           ),
         ),

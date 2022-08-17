@@ -34,6 +34,9 @@ dependencies:
   flutter_mobx: ^2.0.2
   hive: ^2.0.4
   hive_flutter: ^1.1.0
+  appcenter: ^0.2.1
+  appcenter_analytics: ^0.2.1
+  appcenter_crashes: ^0.2.1
 
 
   # The following adds the Cupertino Icons font to your application.

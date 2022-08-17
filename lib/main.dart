@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:jogo_da_memoria/controllers/game_controller.dart';
 import 'package:jogo_da_memoria/pages/home_page.dart';
+import 'package:jogo_da_memoria/repositories/recordes_repository.dart';
 import 'package:jogo_da_memoria/thema.dart';
 import 'package:provider/provider.dart';
 
-void main() {
+void main() async {
+  await Hive.initFlutter();
+
   runApp(
     MultiProvider(
       providers: [
-        Provider<GameController>(
-          create: (_) => GameController(),
+        Provider<RecordesRepository>(create: (_) => RecordesRepository()),
+        ProxyProvider<RecordesRepository, GameController>(
+          update: (_, repo, __) => GameController(recordesRepository: repo),
         )
       ],
       child: const MyApp(),
